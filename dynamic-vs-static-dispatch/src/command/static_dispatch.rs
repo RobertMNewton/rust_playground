@@ -1,4 +1,4 @@
-use std::process::Command;
+use std::{borrow::Borrow, process::Command};
 
 use super::benchmark::{Solution, Commands};
 
@@ -36,21 +36,25 @@ impl_static_command!(Decrement, |x| x - 1.0);
 impl_static_command!(Square, |x: f64| x.powf(2.0));
 impl_static_command!(Root, |x: f64| x.powf(0.5));
 
-pub struct StaticSolution<T: StaticCommand> {
-    head: Box<T>,
+pub struct StaticSolution {
+    head: Box<dyn StaticCommand>,
 }
 
-impl <T: StaticCommand>Solution for StaticSolution<T> {
+
+impl Solution for StaticSolution {
     fn new(commands: Vec<Commands>) -> Self {
-        let mut head: StaticCommand;
+        let mut curr: Box<dyn StaticCommand>;
+        let mut started = false;
 
-        for command in commands {
-
+        for i in (commands.len()-2)..0 {
+            let (head, tail) = (commands[i].borrow(), commands[i+1].borrow());
+            curr = match head {
+                
+            };
         }
-         // not sure about this part
 
         StaticSolution { 
-            head: head,
+            head: curr,
         }
     }
 
